@@ -1,61 +1,69 @@
-# Serika Streaming – Samsung TV (Tizen)
+# Serika Streaming – LG TV (WebOS)
 
-Samsung Tizen web app wrapper for [Serika Streaming](https://streaming.serika.dev).
+LG WebOS web app wrapper for [Serika Streaming](https://streaming.serika.dev).
 
 ## Overview
 
-This is a lightweight Tizen web application that loads the Serika Streaming website inside the Samsung TV browser engine. It:
+This is a lightweight WebOS web application that loads the Serika Streaming website inside the LG OS. It:
 
 - Navigates to the login page (or auto-redirects to browse if already logged in)
-- Identifies itself via `?platform=tizen` so the website hides Chromecast UI and sends `X-Serika-Platform: samsung-tv` headers
-- Registers Samsung TV remote control keys for media playback
+- Identifies itself via `?platform=webos` so the website hides Chromecast UI and sends `X-Serika-Platform: samsung-tv` headers
+- Registers LG remote control keys for media playback
 - Keeps the screen awake during use
 
 ## Project Structure
 
 ```
-├── config.xml      # Tizen app manifest (privileges, access, metadata)
+├── appinfo.json    # WebOS app manifest (privileges, access, metadata)
 ├── index.html      # Entry point with loading screen
 ├── js/
 │   └── main.js     # Remote key registration, navigation logic
 ├── css/
 │   └── style.css   # Loading screen styles
-└── icon.png        # App icon (114×114)
+├── icon.png        # App icon (114×114)
+└── largeicon.png
 ```
 
 ## Requirements
 
-- [Tizen Studio](https://developer.tizen.org/development/tizen-studio/download) with TV extensions
-- Samsung TV developer mode enabled (for sideloading)
-- A Samsung developer certificate
+- [The LG WebOS CLI](https://webostv.developer.lge.com/develop/tools/cli-installation)
+- LG WebOS developer mode enabled (for sideloading)
 
 ## Building & Deploying
 
-### Using Tizen Studio
+### Using the WebOS CLI
 
-1. Import this project into Tizen Studio (`File → Import → Tizen → Tizen Project`)
-2. Right-click the project → `Build Signed Package`
-3. This produces a `.wgt` file in the project root
+1. Open the terminal in the project root
+2. type ares-generate -l
+3. This produces a `.ipk` file in the project root
 
-### Sideloading to a Samsung TV
+### Sideloading to a LG TV (This only lasts for a certain time period, or when offline after 10 reboots)
 
-1. Enable **Developer Mode** on your Samsung TV (Apps → enter `12345` on remote)
-2. Set the **Host PC IP** to your computer's IP address
-3. In Tizen Studio, connect to the TV via Device Manager
-4. Right-click the project → `Run As → Tizen Web Application`
-
-### Using CLI
-
+1. Create a LG Developer account
+2. Install the [Developer Mode app](https://gb.lgappstv.com/main/tvapp/detail?appId=232503&catCode1=&moreYn=N&cateYn=N&orderType=0&headerName=&appRankCode=&sellrUsrNo=)
+3. Boot into the Developer Mode app and login with your Developer account.
+4. Click on the "Dev Mode Status" button to reboot the TV into Developer Mode
+5. Execute the ares-setup-device command and select add.
+6. Enter the details about your TV (NOTE: You do not need to enter any password. It is not required)
+7. When your tv is added to the list, enable the Key Server button.
+8. Get the Key File with the following command
 ```bash
-# Package
-tizen package -t wgt -s <your-certificate-profile> -- .
-
-# Install on connected TV
-tizen install -n SerikaStreaming.wgt -t <device-serial>
-
-# Run
-tizen run -p SerikaStr.SerikaStreaming -t <device-serial>
+ares-novacom --device (INPUT THE NAME YOU GAVE THE DEVICE IN STEP 6 HERE) --getkey
 ```
+9. Enter the passphrase into the input as displayed on your tv. This is case sensitive.
+10. Check the connection with the following command:
+```bash
+ares-device --system-info --device (INPUT THE NAME YOU GAVE THE DEVICE IN STEP 6 HERE)
+```
+11. Install the app by running the next command:
+```bash
+ares-install --device (INPUT THE NAME YOU GAVE THE DEVICE IN STEP 6 HERE) ./(INPUT THE NAME OF THE IPK FILE HERE)
+```
+12. Use ares-launch to run the app:
+```bash
+ares-launch --device (INPUT THE NAME YOU GAVE THE DEVICE IN STEP 6 HERE) (INPUT THE NAME OF THE APP IN THE FOLLOWING FORMAT: com.domain.app)
+```
+NOTE: If the commands don't work, type npx in front of the command.
 
 ## Configuration
 

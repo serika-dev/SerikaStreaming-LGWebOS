@@ -5,6 +5,9 @@
 .package/
 *.wgt
 
+# LG WebOS build
+*.ipk
+
 # IDE
 .settings/
 .vscode/

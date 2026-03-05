@@ -1,5 +1,5 @@
 /**
- * Serika Streaming - Samsung Tizen TV App
+ * Serika Streaming - LG WebOS TV App
  *
  * Wrapper app that loads the Serika Streaming website with
  * platform identification so the website can hide Chromecast UI
@@ -67,10 +67,10 @@
     // The middleware in the main app handles auth:
     //   /login with session  → redirects to /browse
     //   /login without session → shows login page
-    // We append ?platform=tizen so the website knows we're on Samsung TV
+    // We append ?platform=webos so the website knows we're on LG WebOS
     function navigateToWebsite() {
         keepScreenOn();
-        window.location.href = WEBSITE_URL + '/login?platform=tizen';
+        window.location.href = WEBSITE_URL + '/login?platform=webos';
     }
 
     // Initialize

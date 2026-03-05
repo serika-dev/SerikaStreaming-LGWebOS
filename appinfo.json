@@ -1,0 +1,10 @@
+{
+  "id": "dev.serika.streaming",
+  "version": "1.0.0",
+  "vendor": "Serika Company",
+  "type": "web",
+  "main": "index.html",
+  "title": "Serika Streaming",
+  "icon": "icon.png",
+  "largeIcon": "largeIcon.png"
+}
